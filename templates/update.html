@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+    {% if author == user %}
+        <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h3>Makale Güncelle</h3>
+            <hr>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form|crispy }}
+                <br>
+                <button type="submit" class="btn btn-danger">Makale Güncelle</button>
+            </form>
+
+        </div>
+
+    {% else %}
+        <div class="alert alert-danger">
+            Bu Makalaye Erişme İzniniz Yok
+        </div>
+    {% endif %}
+
+{% endblock %}
