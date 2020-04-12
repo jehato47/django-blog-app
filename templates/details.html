@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load embed_video_tags %}
 {% block body %}
     <div class="row">
         <!-- Post Content Column -->
@@ -18,20 +19,34 @@
 
             <!-- Preview Image -->
             {% if article.article_image %}
-                <img class="img-fluid rounded" src="{{ article.article_image.url }}" alt="">
+                <img  class="img-fluid rounded" src="{{ article.article_image.url }}" alt="">
+                <div class="embed-responsive embed-responsive-21by9">
+
+                {% video article.article_image '100% x 50%' %}
+{#                {% video article.article_image as my_video %}#}
+{#                    URL: {{ my_video.url }}#}
+{#                    Thumbnail: {{ my_video.thumbnail }}#}
+{#                    Backend: {{ my_video.backend }}#}
+{#                    {% video my_video 'small' %}#}
+{#                {% endvideo %}#}
+
+
+                </div>
+
             {% endif %}
+
             <hr>
 
             <!-- Post Content -->
             <p class="lead">
             {{ article.content|safe}}
             </p>
-
             <hr>
 
-        <h4>Yorumlar</h4>
-            <hr>
+
         {% if comments %}
+            <h4>Yorumlar</h4>
+            <hr>
             {% for comment in comments %}
                 <div class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="/media/baseline_account_circle_black_18dp.png" alt="">
@@ -45,32 +60,28 @@
                 </div>
             {% endfor %}
 
-        {% else %}
-            <div class="alert alert-warning">
-                Bu makaleye herhangi bir yorum yazılmamış, ilk yorumu yapan siz olun!
-            </div>
+
         {% endif %}
 
 
             <div class="card my-4">
                 <h5 class="card-header">Yorum Ekle</h5>
+
                 <div class="card-body">
                     <form action="{% url "article:comment" article.id %}" method="post">
                         {% csrf_token %}
 
                         <div class="form-group">
                             <label for="formGroupExampleInput">Yorum</label>
-
                             <textarea name="comment_content" class="form-control" rows="3"></textarea>
                         </div>
+
                         <button type="submit" class="btn btn-danger">Ekle</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-
 
 
 
